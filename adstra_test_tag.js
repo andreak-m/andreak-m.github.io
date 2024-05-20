@@ -1,1 +1,446 @@
-var urlParams,script_tag=document.getElementById("inc"),LiveRampTagID=script_tag.getAttribute("data-tagId"),VeevaTagID=script_tag.getAttribute("data-tagId"),tmsID=script_tag.getAttribute("data-tms"),dtrafficSource=script_tag.getAttribute("data-trafficSource"),dreferralChannel=script_tag.getAttribute("data-referralChannel"),dreferralSource=script_tag.getAttribute("data-referralSource"),dsearchGroup=script_tag.getAttribute("data-searchGroup"),drepeatVisitor=script_tag.getAttribute("data-repeatVisitor"),dDomain=script_tag.getAttribute("data-domain"),dDeviceType=script_tag.getAttribute("data-deviceType"),dMapIdType=script_tag.getAttribute("data-mapid"),dKeyActType=script_tag.getAttribute("data-keyActType");(window.onpopstate=function(){var e,t=/\+/g,r=/([^&=]+)=?([^&]*)/g,a=function(e){return decodeURIComponent(e.replace(t," "))},i=window.location.search.substring(1);for(urlParams={};e=r.exec(i);)urlParams[a(e[1])]=a(e[2])})();var LiveRamp_utm_medium=urlParams.utm_medium||"",LiveRamp_utm_campaign=urlParams.utm_campaign||"",LiveRamp_utm_source=urlParams.utm_source||"",LiveRamp_utm_content=urlParams.utm_content||"",knownTypes=["guid","cid","msclkid","gclid"];if(null!==dMapIdType){function e(e){for(var t=e.concat(),r=0;r<t.length;++r)for(var a=r+1;a<t.length;++a)t[r]===t[a]&&t.splice(a--,1);return t}var t=dMapIdType.split("|"),r=e(knownTypes.concat(t))}else r=knownTypes;var mergedValues=[];r.forEach(function(e){void 0===urlParams[e]||""==urlParams[e]?mergedValues.push("u"):mergedValues.push(urlParams[e])});var result={},deleteTypes=[];for(var key in r.forEach(function(e,t){result[e]=mergedValues[t]}),result)"u"==result[key]&&deleteTypes.push(key);deleteTypes.forEach(function(e){delete result[e]}),Object.size=function(e){var t,r=0;for(t in e)e.hasOwnProperty(t)&&r++;return r};var pDataTypes=[],pDataValues=[];for(var key in result)pDataTypes.push(key),pDataValues.push(result[key]);var siteURL=document.location.href;function chunkString(e,t){if(""==e)return[""];for(var r,a=Math.ceil(e.length/t),i=Array(a),o=0;o<a;o++)r=o*t,i[o]=e.substring(r,r+t);return i}function replace_chars(e){return e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=(e=e.replace(/\|/g,"■")).replace(/,/g,"\xc6")).replace(/=/g,"⌠")).replace(/'/g,"\xde")).replace(/"/g,"\xd0")).replace(/%7c/g,"■")).replace(/%2c/g,"\xc6")).replace(/%3d/g,"⌠")).replace(/%7C/g,"■")).replace(/%2C/g,"\xc6")).replace(/%3D/g,"⌠")).replace(/%27/g,"\xde")).replace(/%22/g,"\xd0")).replace(/%257c/g,"■")).replace(/%252c/g,"\xc6")).replace(/%253d/g,"⌠")).replace(/%2527/g,"\xde")).replace(/%2522/g,"\xd0")}function isURL(e){return/((https|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi.test(e)}function isNonLatinCharacters(e){return/[^\u0000-\u00FF]/.test(e)}function truncate_url(e){return""==e||"u"==e||!isURL(e)||isNonLatinCharacters(e)?chunkString(e,125)[0]:(0!=e.indexOf("http")&&(e="https://"+e),e="https://"+extractHostname(e))}function extractHostname(e){return -1<e.indexOf("//")?e.split("/")[2]:e.split("/")[0]}var URLparts=chunkString(siteURL,250),docCookies={getItem:function(e){return e&&decodeURIComponent(document.cookie.replace(RegExp("(?:(?:^|.*;)\\s*"+encodeURIComponent(e).replace(/[\-\.\+\*]/g,"\\$&")+"\\s*\\=\\s*([^;]*).*$)|^.*$"),"$1"))||null},setItem:function(e,t,r,a,i,o){if(!e||/^(?:expires|max\-age|path|domain|secure)$/i.test(e))return!1;var c="";if(r)switch(r.constructor){case Number:c=1/0===r?"; expires=Fri, 31 Dec 9999 23:59:59 GMT":"; max-age="+r;break;case String:c="; expires="+r;break;case Date:c="; expires="+r.toUTCString()}return document.cookie=encodeURIComponent(e)+"="+encodeURIComponent(t)+c+(i?"; domain="+i:"")+(a?"; path="+a:"")+(o?"; secure":""),!0},removeItem:function(e,t,r){return!!this.hasItem(e)&&(document.cookie=encodeURIComponent(e)+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT"+(r?"; domain="+r:"")+(t?"; path="+t:""),!0)},hasItem:function(e){return!(!e||/^(?:expires|max\-age|path|domain|secure)$/i.test(e))&&RegExp("(?:^|;\\s*)"+encodeURIComponent(e).replace(/[\-\.\+\*]/g,"\\$&")+"\\s*\\=").test(document.cookie)},keys:function(){for(var e=document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g,"").split(/\s*(?:\=[^;]*)?;\s*/),t=e.length,r=0;r<t;r++)e[r]=decodeURIComponent(e[r]);return e}},setCookieDomain=function(){return location.hostname.split(".").slice(-2).join(".")};function SendLiveRamp(e,t){var r,a="u",i="u",o="u",c="u",s={},n="",p="u",u="1.4.1",m=RegExp(setCookieDomain());p=docCookies.getItem("liveRampSesssionID")?docCookies.getItem("liveRampSesssionID"):(new Date).getTime()+""+Math.random(),docCookies.setItem("liveRampSesssionID",p,v(),"/",setCookieDomain()),LiveRamp_utm_source?("swoop"===LiveRamp_utm_source?(i="swoop",o=document.referrer,c=LiveRamp_utm_content||"u",a=LiveRamp_utm_campaign||"u"):(o=LiveRamp_utm_source,a=LiveRamp_utm_campaign||"u",c=LiveRamp_utm_content||"u","u"==(i=LiveRamp_utm_medium||"u")&&/https?:\/\/(www.google.com|www.bing.com|search.yahoo.com)/.test(document.referrer)&&(i="cpc")),docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain())):/gclid|dclid|gclsrc/.test(document.location.search)?(o=(i=/https?:\/\/(www.google.com|www.bing.com|search.yahoo.com)/.test(document.referrer)?"cpc":"Display",document.referrer),a=LiveRamp_utm_campaign||"u",c=LiveRamp_utm_content||"u",docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain())):document.referrer?/https?:\/\/(www.google.com|www.bing.com|search.yahoo.com)/.test(document.referrer)?(i="Organic",o=document.referrer,a=LiveRamp_utm_campaign||"u",c=LiveRamp_utm_content||"u",docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain())):/(facebook|twitter|pinterest|instagram|youtube|reddit|linkedin|hubpages|vine|meetup)\.com/.test(document.referrer)?(i="Social",o=document.referrer,a=LiveRamp_utm_campaign||"u",c=LiveRamp_utm_content||"u",docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain)):m.test(document.referrer)?docCookies.getItem("liveRampReferrer")?(a=(r=docCookies.getItem("liveRampReferrer").split(","))[0],i=r[1],o=r[2],c=r[3],docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain())):(i="None",o="Direct"):(i="Referral",o=/https?:\/\/([^\/]*)/.exec(document.referrer)[1],a=LiveRamp_utm_campaign||"u",c=LiveRamp_utm_content||"u",docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain())):docCookies.getItem("liveRampReferrer")?(a=(r=docCookies.getItem("liveRampReferrer").split(","))[0],i=r[1],o=r[2],c=r[3],docCookies.setItem("liveRampReferrer",R(),v(),"/",setCookieDomain())):(i="None",o="Direct"),console.log("Hosted Tag Version: "+u),a=dtrafficSource||a||"u",i=dreferralChannel||i||"u",o=dreferralSource||o||"u",c=dsearchGroup||c||"u",s.SessionID=p,s.SessionID=chunkString(s.SessionID,250)[0],s.RepeatVisitor=drepeatVisitor||(docCookies.getItem("liveRampFirstVisit")?(docCookies.setItem("liveRampFirstVisit","true",v(),"/",setCookieDomain()),"N"):docCookies.getItem("_ga")?(docCookies.setItem("liveRampRepeatVisitor","true",!1,"/",setCookieDomain()),"Y"):docCookies.getItem("liveRampRepeatVisitor")?(docCookies.setItem("liveRampRepeatVisitor","true",!1,"/",setCookieDomain()),"Y"):(docCookies.setItem("liveRampFirstVisit","true",v(),"/",setCookieDomain()),docCookies.setItem("liveRampRepeatVisitor","true"),"N"))||"u",s.RepeatVisitor=chunkString(s.RepeatVisitor,250)[0],s.Domain=dDomain||document.location.hostname||"u",s.Domain=chunkString(s.Domain,250)[0],s.DeviceType=dDeviceType||(/phone|iPhone|Android(.*)Mobile/.test(navigator.userAgent)||window.innerWidth<480?"Phone":/iPad|Android/.test(navigator.userAgent)||window.innerWidth<900?"Tablet":"Desktop")||"u",s.DeviceType=chunkString(s.DeviceType,250)[0],s.Version="version "+u,s.Version=chunkString(s.Version,250)[0],0<Object.size(result)?(s.MapIdType=chunkString(replace_chars(pDataTypes.join("■")),250)[0],s.MapIdValue=chunkString(replace_chars(pDataValues.join("■")),250)[0]):(s.MapIdType="u",s.MapIdValue="u"),s.pageUrl=replace_chars(URLparts[0]).replace(/&/g, "-"),void 0!==URLparts[1]?s.pageurl2=replace_chars(URLparts[1]):s.pageurl2="u",void 0!==URLparts[2]?s.pageurl3=replace_chars(URLparts[2]):s.pageurl3="u",void 0!==URLparts[3]?s.pageurl4=replace_chars(URLparts[3]):s.pageurl4="u",s.TrafficSource=chunkString(replace_chars(a),250)[0],s.ReferralChannel=chunkString(replace_chars(i),250)[0],s.ReferralSource=chunkString(replace_chars(truncate_url(o)),250)[0],s.SearchGroup=chunkString(replace_chars(c),250)[0];var l,g=[];for(l=0;l<20;l++)g[l]=0;for(var d in s.KeyActionID="u",0!=arguments.length&&0!=e&&("KAID"==dKeyActType?s.KeyActionID=chunkString(replace_chars(e),250)[0]:g[e-1]=1),s.KeyAct1=g[0],s.KeyAct2=g[1],s.KeyAct3=g[2],s.KeyAct4=g[3],s.KeyAct5=g[4],s.KeyAct6=g[5],s.KeyAct7=g[6],s.KeyAct8=g[7],s.KeyAct9=g[8],s.KeyAct10=g[9],s.KeyAct11=g[10],s.KeyAct12=g[11],s.KeyAct13=g[12],s.KeyAct14=g[13],s.KeyAct15=g[14],s.KeyAct16=g[15],s.KeyAct17=g[16],s.KeyAct18=g[17],s.KeyAct19=g[18],s.KeyAct20=g[19],s)n+=","+d+"="+String(s[d]);var h=encodeURIComponent((n=n.slice(1)).toLowerCase()),f=document.location.protocol||"https:";function v(){var e=new Date;return e.setTime(e.getTime()+18e5),e}function R(){return a+","+i+","+o+","+c}LiveRampTagID.split("|").forEach(function(e){var r=document.createElement("img");r.style="display:none",r.onload=function(){(t=t||function(){})()},r.src=f+"//di.rlcdn.com/"+e+".html?pdata="+h});VeevaTagID.split("|").forEach(function(e){TagParameterValues=h.replace(/%2C/g,"&");TagParameterValues=TagParameterValues.replace(/%3D/g,"=");var r=document.createElement("img");r.style="display:none",r.onload=function(){(t=t||function(){})()},r.src=f+"//sync.graph.bluecava.com/ds.png?p=5b3a0357-db2b-11ee-a2da-4201ac100013&tagId="+e+"&"+TagParameterValues});}
+var script_tag = document.getElementById("inc");
+var LiveRampTagID = script_tag.getAttribute("data-tagId");
+var tmsID = script_tag.getAttribute("data-tms");
+var dtrafficSource = script_tag.getAttribute("data-trafficSource");
+var dreferralChannel = script_tag.getAttribute("data-referralChannel");
+var dreferralSource = script_tag.getAttribute("data-referralSource");
+var dsearchGroup = script_tag.getAttribute("data-searchGroup");
+var drepeatVisitor = script_tag.getAttribute("data-repeatVisitor");
+var dDomain = script_tag.getAttribute("data-domain");
+var dDeviceType = script_tag.getAttribute("data-deviceType");
+var dMapIdType = script_tag.getAttribute("data-mapid");
+var dKeyActType = script_tag.getAttribute("data-keyActType");
+var urlParams;
+(window.onpopstate = function() {
+    var match, pl = /\+/g, search = /([^&=]+)=?([^&]*)/g, decode = function(s) {
+        return decodeURIComponent(s.replace(pl, " "))
+    }, query = window.location.search.substring(1);
+    urlParams = {};
+    while (match = search.exec(query))
+        urlParams[decode(match[1])] = decode(match[2])
+}
+)();
+var LiveRamp_utm_medium = urlParams["utm_medium"] || "";
+var LiveRamp_utm_campaign = urlParams["utm_campaign"] || "";
+var LiveRamp_utm_source = urlParams["utm_source"] || "";
+var LiveRamp_utm_content = urlParams["utm_content"] || "";
+var knownTypes = ["guid", "cid", "msclkid", "gclid"];
+if (dMapIdType !== null) {
+    function arrayUnique(array) {
+        var a = array.concat();
+        for (var i = 0; i < a.length; ++i) {
+            for (var j = i + 1; j < a.length; ++j) {
+                if (a[i] === a[j])
+                    a.splice(j--, 1)
+            }
+        }
+        return a
+    }
+    var dlTypes = dMapIdType.split("|");
+    var mergedTypes = arrayUnique(knownTypes.concat(dlTypes))
+} else {
+    mergedTypes = knownTypes
+}
+var mergedValues = [];
+mergedTypes.forEach(function(entry) {
+    if (typeof urlParams[entry] === "undefined" || urlParams[entry] == "") {
+        mergedValues.push("u")
+    } else {
+        mergedValues.push(urlParams[entry])
+    }
+});
+var result = {};
+var deleteTypes = [];
+mergedTypes.forEach(function(key, i) {
+    result[key] = mergedValues[i]
+});
+for (var key in result) {
+    if (result[key] == "u") {
+        deleteTypes.push(key)
+    }
+}
+deleteTypes.forEach(function(entry) {
+    delete result[entry]
+});
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key))
+            size++
+    }
+    return size
+}
+;
+var pDataTypes = [];
+var pDataValues = [];
+for (var key in result) {
+    pDataTypes.push(key);
+    pDataValues.push(result[key])
+}
+var siteURL = document.location.href;
+function chunkString(str, len) {
+    if (str == "") {
+        return [""]
+    }
+    var _size = Math.ceil(str.length / len), _ret = new Array(_size), _offset;
+    for (var _i = 0; _i < _size; _i++) {
+        _offset = _i * len;
+        _ret[_i] = str.substring(_offset, _offset + len)
+    }
+    return _ret
+}
+function replace_chars(str) {
+    str = str.replace(/\|/g, "■");
+    str = str.replace(/,/g, "Æ");
+    str = str.replace(/=/g, "⌠");
+    str = str.replace(/'/g, "Þ");
+    str = str.replace(/"/g, "Ð");
+    str = str.replace(/%7c/g, "■");
+    str = str.replace(/%2c/g, "Æ");
+    str = str.replace(/%3d/g, "⌠");
+    str = str.replace(/%7C/g, "■");
+    str = str.replace(/%2C/g, "Æ");
+    str = str.replace(/%3D/g, "⌠");
+    str = str.replace(/%27/g, "Þ");
+    str = str.replace(/%22/g, "Ð");
+    str = str.replace(/%257c/g, "■");
+    str = str.replace(/%252c/g, "Æ");
+    str = str.replace(/%253d/g, "⌠");
+    str = str.replace(/%2527/g, "Þ");
+    str = str.replace(/%2522/g, "Ð");
+    return str
+}
+function isURL(str) {
+    var regex = /((https|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+    return regex.test(str)
+}
+function isNonLatinCharacters(str) {
+    return /[^\u0000-\u00FF]/.test(str)
+}
+function truncate_url(str) {
+    if (str == "" || str == "u" || !isURL(str) || isNonLatinCharacters(str)) {
+        return chunkString(str, 125)[0]
+    } else if (str.indexOf("http") != 0) {
+        str = "https://" + str
+    }
+    str = "https://" + extractHostname(str);
+    return str
+}
+function extractHostname(urlstr) {
+    var hostname;
+    if (urlstr.indexOf("//") > -1) {
+        hostname = urlstr.split("/")[2]
+    } else {
+        hostname = urlstr.split("/")[0]
+    }
+    return hostname
+}
+var URLparts = chunkString(siteURL, 250);
+var docCookies = {
+    getItem: function(sKey) {
+        if (!sKey) {
+            return null
+        }
+        return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
+    },
+    setItem: function(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+            return false
+        }
+        var sExpires = "";
+        if (vEnd) {
+            switch (vEnd.constructor) {
+            case Number:
+                sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                break;
+            case String:
+                sExpires = "; expires=" + vEnd;
+                break;
+            case Date:
+                sExpires = "; expires=" + vEnd.toUTCString();
+                break
+            }
+        }
+        document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+        return true
+    },
+    removeItem: function(sKey, sPath, sDomain) {
+        if (!this.hasItem(sKey)) {
+            return false
+        }
+        document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
+        return true
+    },
+    hasItem: function(sKey) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+            return false
+        }
+        return new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=").test(document.cookie)
+    },
+    keys: function() {
+        var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+        for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) {
+            aKeys[nIdx] = decodeURIComponent(aKeys[nIdx])
+        }
+        return aKeys
+    }
+};
+var setCookieDomain = function() {
+    var splitHostname = location.hostname.split(".");
+    var removedSubdomain = splitHostname.slice(-2);
+    var rootDomain = removedSubdomain.join(".");
+    return rootDomain
+};
+function SendLiveRamp(keyActionOn, callBack) {
+    var trafficSource = "u";
+    var referralChannel = "u";
+    var referralSource = "u";
+    var searchGroup = "u";
+    var pData = {};
+    var pDataString = "";
+    var sessionID = "u";
+    var version = "1.5.0";
+    var setCookiePath = "/";
+    var referralExclusionRe = new RegExp(setCookieDomain());
+    setSessionID();
+    getReferrerData();
+    console.log("Hosted Tag Version: " + version);
+    trafficSource = dtrafficSource || trafficSource || "u";
+    referralChannel = dreferralChannel || referralChannel || "u";
+    referralSource = dreferralSource || referralSource || "u";
+    searchGroup = dsearchGroup || searchGroup || "u";
+    pData.SessionID = sessionID;
+    pData.SessionID = chunkString(pData.SessionID, 250)[0];
+    pData.RepeatVisitor = drepeatVisitor || checkRepeatVisitor() || "u";
+    pData.RepeatVisitor = chunkString(pData.RepeatVisitor, 250)[0];
+    pData.Domain = dDomain || document.location.hostname || "u";
+    pData.Domain = chunkString(pData.Domain, 250)[0];
+    pData.DeviceType = dDeviceType || getDeviceType() || "u";
+    pData.DeviceType = chunkString(pData.DeviceType, 250)[0];
+    pData.Version = "version " + version;
+    pData.Version = chunkString(pData.Version, 250)[0];
+    if (Object.size(result) > 0) {
+        pData.MapIdType = chunkString(replace_chars(pDataTypes.join("■")), 250)[0];
+        pData.MapIdValue = chunkString(replace_chars(pDataValues.join("■")), 250)[0]
+    } else {
+        pData.MapIdType = "u";
+        pData.MapIdValue = "u"
+    }
+    pData.pageUrl = replace_chars(URLparts[0]);
+    if (typeof URLparts[1] !== "undefined") {
+        pData.pageurl2 = replace_chars(URLparts[1])
+    } else {
+        pData.pageurl2 = "u"
+    }
+    if (typeof URLparts[2] !== "undefined") {
+        pData.pageurl3 = replace_chars(URLparts[2])
+    } else {
+        pData.pageurl3 = "u"
+    }
+    if (typeof URLparts[3] !== "undefined") {
+        pData.pageurl4 = replace_chars(URLparts[3])
+    } else {
+        pData.pageurl4 = "u"
+    }
+    pData.TrafficSource = chunkString(replace_chars(trafficSource), 250)[0];
+    pData.ReferralChannel = chunkString(replace_chars(referralChannel), 250)[0];
+    pData.ReferralSource = chunkString(replace_chars(truncate_url(referralSource)), 250)[0];
+    pData.SearchGroup = chunkString(replace_chars(searchGroup), 250)[0];
+    var arrKeyActions = [];
+    var i;
+    for (i = 0; i < 20; i++) {
+        arrKeyActions[i] = 0
+    }
+    pData.KeyActionID = "u";
+    if (arguments.length != 0) {
+        if (keyActionOn != 0) {
+            if (dKeyActType == "KAID") {
+                pData.KeyActionID = chunkString(replace_chars(keyActionOn), 250)[0]
+            } else {
+                arrKeyActions[keyActionOn - 1] = 1
+            }
+        }
+    }
+    pData.KeyAct1 = arrKeyActions[0];
+    pData.KeyAct2 = arrKeyActions[1];
+    pData.KeyAct3 = arrKeyActions[2];
+    pData.KeyAct4 = arrKeyActions[3];
+    pData.KeyAct5 = arrKeyActions[4];
+    pData.KeyAct6 = arrKeyActions[5];
+    pData.KeyAct7 = arrKeyActions[6];
+    pData.KeyAct8 = arrKeyActions[7];
+    pData.KeyAct9 = arrKeyActions[8];
+    pData.KeyAct10 = arrKeyActions[9];
+    pData.KeyAct11 = arrKeyActions[10];
+    pData.KeyAct12 = arrKeyActions[11];
+    pData.KeyAct13 = arrKeyActions[12];
+    pData.KeyAct14 = arrKeyActions[13];
+    pData.KeyAct15 = arrKeyActions[14];
+    pData.KeyAct16 = arrKeyActions[15];
+    pData.KeyAct17 = arrKeyActions[16];
+    pData.KeyAct18 = arrKeyActions[17];
+    pData.KeyAct19 = arrKeyActions[18];
+    pData.KeyAct20 = arrKeyActions[19];
+    for (var key in pData) {
+        pDataString += "," + key + "=" + String(pData[key])
+    }
+    pDataString = pDataString.slice(1);
+    var encodedQuery = encodeURIComponent(pDataString.toLowerCase());
+    var siteProtocol = document.location.protocol || "https:";
+    var arrLiveRampTagID = LiveRampTagID.split("|");
+    arrLiveRampTagID.forEach(function(tagID) {
+        var elm = document.createElement("img");
+        elm.style = "display:none";
+        elm.onload = function() {
+            var keyAction = keyActionOn || "";
+            callBack = callBack || function() {
+                return
+            }
+            ;
+            callBack()
+        }
+        ;
+        elm.src = siteProtocol + "//di.rlcdn.com/" + tagID + ".html?pdata=" + encodedQuery
+    });
+    let adstraDataString = "";
+    for (var key in pData) {
+        if (key == 'pageUrl') { 
+          pData[key] = pData[key].replace(/&/g, "-")  
+        }
+        adstraDataString += "&" + key + "=" + String(pData[key])
+    }
+    const astraQuery = adstraDataString.toLowerCase();
+    arrLiveRampTagID.forEach(function(tagID) {
+        const tagQuery = encodedQuery.replace(/%2C/g, "&").replace(/%3D/g, "=");
+        var elm = document.createElement("img");
+        elm.style = "display:none";
+        elm.onload = function() {
+            var keyAction = keyActionOn || "";
+            callBack = callBack || function() {
+                return
+            }
+            ;
+            callBack()
+        }
+        ;
+        elm.src = siteProtocol + "//sync.graph.bluecava.com/ds.png?p=5b3a0357-db2b-11ee-a2da-4201ac100013&tagId=" + tagID + astraQuery
+    });
+    function getExpiration() {
+        var date = new Date;
+        date.setTime(date.getTime() + 1e3 * 60 * 30);
+        return date
+    }
+    function makeReferrerString() {
+        return trafficSource + "," + referralChannel + "," + referralSource + "," + searchGroup
+    }
+    function getReferrerData() {
+        var cookie;
+        if (LiveRamp_utm_source) {
+            if (LiveRamp_utm_source === "swoop") {
+                referralChannel = "swoop";
+                referralSource = document.referrer;
+                searchGroup = LiveRamp_utm_content || "u";
+                trafficSource = LiveRamp_utm_campaign || "u";
+                docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+            } else {
+                referralChannel = LiveRamp_utm_medium || "u";
+                referralSource = LiveRamp_utm_source;
+                trafficSource = LiveRamp_utm_campaign || "u";
+                searchGroup = LiveRamp_utm_content || "u";
+                if (referralChannel == "u") {
+                    if (/https?:\/\/(www.google.com|www.bing.com|search.yahoo.com)/.test(document.referrer)) {
+                        referralChannel = "cpc"
+                    }
+                }
+                docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+            }
+        } else if (/gclid|dclid|gclsrc/.test(document.location.search)) {
+            if (/https?:\/\/(www.google.com|www.bing.com|search.yahoo.com)/.test(document.referrer)) {
+                referralChannel = "cpc";
+                referralSource = document.referrer
+            } else {
+                referralChannel = "Display";
+                referralSource = document.referrer
+            }
+            trafficSource = LiveRamp_utm_campaign || "u";
+            searchGroup = LiveRamp_utm_content || "u";
+            docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+        } else if (document.referrer) {
+            if (/https?:\/\/(www.google.com|www.bing.com|search.yahoo.com)/.test(document.referrer)) {
+                referralChannel = "Organic";
+                referralSource = document.referrer;
+                trafficSource = LiveRamp_utm_campaign || "u";
+                searchGroup = LiveRamp_utm_content || "u";
+                docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+            } else if (/(facebook|twitter|pinterest|instagram|youtube|reddit|linkedin|hubpages|vine|meetup)\.com/.test(document.referrer)) {
+                referralChannel = "Social";
+                referralSource = document.referrer;
+                trafficSource = LiveRamp_utm_campaign || "u";
+                searchGroup = LiveRamp_utm_content || "u";
+                docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain)
+            } else if (referralExclusionRe.test(document.referrer)) {
+                if (docCookies.getItem("liveRampReferrer")) {
+                    cookie = docCookies.getItem("liveRampReferrer").split(",");
+                    trafficSource = cookie[0];
+                    referralChannel = cookie[1];
+                    referralSource = cookie[2];
+                    searchGroup = cookie[3];
+                    docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+                } else {
+                    referralChannel = "None";
+                    referralSource = "Direct"
+                }
+            } else {
+                referralChannel = "Referral";
+                referralSource = /https?:\/\/([^\/]*)/.exec(document.referrer)[1];
+                trafficSource = LiveRamp_utm_campaign || "u";
+                searchGroup = LiveRamp_utm_content || "u";
+                docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+            }
+        } else if (docCookies.getItem("liveRampReferrer")) {
+            cookie = docCookies.getItem("liveRampReferrer").split(",");
+            trafficSource = cookie[0];
+            referralChannel = cookie[1];
+            referralSource = cookie[2];
+            searchGroup = cookie[3];
+            docCookies.setItem("liveRampReferrer", makeReferrerString(), getExpiration(), setCookiePath, setCookieDomain())
+        } else {
+            referralChannel = "None";
+            referralSource = "Direct"
+        }
+    }
+    function checkRepeatVisitor() {
+        if (docCookies.getItem("liveRampFirstVisit")) {
+            docCookies.setItem("liveRampFirstVisit", "true", getExpiration(), setCookiePath, setCookieDomain());
+            return "N"
+        } else if (docCookies.getItem("_ga")) {
+            docCookies.setItem("liveRampRepeatVisitor", "true", false, setCookiePath, setCookieDomain());
+            return "Y"
+        } else if (docCookies.getItem("liveRampRepeatVisitor")) {
+            docCookies.setItem("liveRampRepeatVisitor", "true", false, setCookiePath, setCookieDomain());
+            return "Y"
+        } else {
+            docCookies.setItem("liveRampFirstVisit", "true", getExpiration(), setCookiePath, setCookieDomain());
+            docCookies.setItem("liveRampRepeatVisitor", "true");
+            return "N"
+        }
+    }
+    function setSessionID() {
+        if (docCookies.getItem("liveRampSesssionID")) {
+            sessionID = docCookies.getItem("liveRampSesssionID");
+            docCookies.setItem("liveRampSesssionID", sessionID, getExpiration(), setCookiePath, setCookieDomain())
+        } else {
+            sessionID = (new Date).getTime() + "" + Math.random();
+            docCookies.setItem("liveRampSesssionID", sessionID, getExpiration(), setCookiePath, setCookieDomain())
+        }
+    }
+    function getDeviceType() {
+        if (/phone|iPhone|Android(.*)Mobile/.test(navigator.userAgent) || window.innerWidth < 480) {
+            return "Phone"
+        } else if (/iPad|Android/.test(navigator.userAgent) || window.innerWidth < 900) {
+            return "Tablet"
+        } else {
+            return "Desktop"
+        }
+    }
+}
